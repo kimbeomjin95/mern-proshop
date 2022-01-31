@@ -1,7 +1,7 @@
-const express  = require('express')
-const dotenv = require('dotenv')
-const products = require('./data/products')
-const _ = require('lodash')
+import express from 'express'
+import dotenv from 'dotenv'
+import products from './data/products.js' // 파일을 가져올 경우 .js 추가
+import _ from 'lodash'
 
 dotenv.config()
 
