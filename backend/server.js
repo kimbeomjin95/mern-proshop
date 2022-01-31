@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import products from './data/products.js' // .js파일을 가져올 경우 .js 추가
 import _ from 'lodash'
 import connectDb from "./config/db.js";
+import colors from 'colors'
 
 dotenv.config()
 
@@ -30,4 +31,4 @@ app.get('/api/products/:id', (req, res) => {
 // env 환경변수 get
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`))
+app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`.yellow.bold))
