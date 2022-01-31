@@ -1,9 +1,12 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import products from './data/products.js' // 파일을 가져올 경우 .js 추가
+import products from './data/products.js' // .js파일을 가져올 경우 .js 추가
 import _ from 'lodash'
+import connectDb from "./config/db.js";
 
 dotenv.config()
+
+connectDb();
 
 const app = express()
 
