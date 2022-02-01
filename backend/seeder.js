@@ -12,6 +12,7 @@ import connectDb from './config/db.js';
 // .env 파일안에 정보 get
 dotenv.config();
 
+// DB 연결
 connectDb();
 
 /* data insert */
@@ -23,7 +24,6 @@ const importData = async () => {
 
     const createUsers = await User.insertMany(users);
     const adminUser = createUsers[0]._id;
-    console.log('adminUser', adminUser);
 
     const sampleProducts = products.map(product => {
       return {
