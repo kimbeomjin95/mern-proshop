@@ -31,6 +31,7 @@ router.get(
     if (product) {
       res.json(product);
     } else {
+      // TODO id 변경 후 404 및 에러메시지 리턴을 안함(확인필요)
       res.status(404);
       throw new Error('Product not found');
     }
