@@ -14,7 +14,7 @@ const Loader = () => {
         transform: 'translate(-50%, -50%)',
       }}
     >
-      <span class="sr-only">Loading...</span>
+      <span className="sr-only">Loading...</span>
     </Spinner>
   );
 };
