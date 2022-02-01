@@ -1,15 +1,25 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
+import {
+  Button,
+  Card,
+  Col,
+  Image,
+  ListGroup,
+  Row,
+  Form,
+} from 'react-bootstrap';
 import Rating from '../components/Rating';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProductDetail } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
 const ProductScreen = () => {
+  const [qty, setQty] = useState(0);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const productDetailReducer = useSelector(state => state.productDetailReducer);
   const { loading, product, error } = productDetailReducer;
 
@@ -19,6 +29,10 @@ const ProductScreen = () => {
   useEffect(() => {
     dispatch(listProductDetail(id));
   }, [dispatch, id]);
+
+  const addToCartHandler = () => {
+    navigate(`/cart/${id}?qty=${qty}`);
+  };
 
   return (
     <Fragment>
@@ -73,12 +87,36 @@ const ProductScreen = () => {
                     </Col>
                   </Row>
                 </ListGroup.Item>
+
+                {/* 재고가 있으면 콤보박스 렌더링 */}
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty</Col>
+                      <Col>
+                        <Form.Select
+                          size="sm"
+                          value={qty}
+                          onChange={e => setQty(e.target.value)}
+                        >
+                          {[...Array(product.countInStock).keys()].map(x => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
+
                 <ListGroup.Item>
                   <div className="d-grid gap-2">
                     <Button
                       className="btn-block"
                       type="button"
                       disabled={product.countInStock === 0}
+                      onClick={addToCartHandler}
                     >
                       Add To Cart
                     </Button>
