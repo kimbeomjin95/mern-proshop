@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 import asyncHandler from 'express-async-handler';
+
+// 사용자 토큰 유효성 체크
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
