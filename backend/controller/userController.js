@@ -1,5 +1,6 @@
 import User from '../models/userModel.js';
 import asyncHandler from 'express-async-handler';
+import generateToken from '../utils/generateToken.js';
 
 /*
  * @desc     Auth user & get token
@@ -7,7 +8,6 @@ import asyncHandler from 'express-async-handler';
  * @access   Public
  */
 const authUser = asyncHandler(async (req, res) => {
-  console.log(req);
   const { email, password } = req.body;
 
   const user = await User.findOne({ email }); // key value가 같은경우 단일처리가능
@@ -19,7 +19,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmon: user.isAdmon,
-      token: null,
+      token: generateToken(user._id),
     });
   } else {
     res.status(401);
