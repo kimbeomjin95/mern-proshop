@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
 
 /*
- * @desc     사용자 토큰 인증 & 토큰 조회
+ * @desc     로그인(사용자 토큰 인증 & 토큰 조회)
  * @route    POST /api/users/login
  * @access   Public
  */
@@ -80,7 +80,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error('User not found');
     throw new Error('등록되어 있지 않은 회원입니다.');
   }
 });
