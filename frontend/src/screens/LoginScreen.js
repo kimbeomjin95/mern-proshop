@@ -20,18 +20,16 @@ const LoginScreen = () => {
   const { loading, userInfo, error } = userLogin;
 
   useEffect(() => {
-    // if (userInfo) {
-    //   navigate(redirect);
-    // }
+    if (userInfo) {
+      navigate(redirect);
+    }
   }, [redirect, userInfo, navigate]);
-  // const dispatch = useDispatch();
-  // const qty = search ? Number(search.split('=')[1]) : 1;
 
-  const submitHandler = () => {
-    // e.preventDefault();
-    //
-    // // DISPATCH LOGIN
-    // dispatch(login(email, password));
+  const submitHandler = e => {
+    e.preventDefault();
+
+    // DISPATCH LOGIN
+    dispatch(login(email, password));
   };
 
   return (
