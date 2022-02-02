@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import Message from '../components/Message';
 import { useLocation, useNavigate, useParams } from 'react-router';
-import { addToCart } from '../actions/cartActions';
+import { addToCart, removeFromCart } from '../actions/cartActions';
 import _ from 'lodash';
 
 const CartScreen = () => {
@@ -30,12 +30,13 @@ const CartScreen = () => {
     }
   }, [dispatch, id, qty]);
 
+  /* 상품 삭제 */
   const removeFromCartHandler = id => {
-    console.log('remove');
+    dispatch(removeFromCart(id));
   };
 
+  /* 상품 주문 */
   const checkoutHandler = () => {
-    console.log('checkoutHandler');
     navigate('/login?redirect=shipping'); // 로그인 하지 않으면 로그인할 예정
   };
 
@@ -102,8 +103,8 @@ const CartScreen = () => {
                   Subtotal (
                   {_.reduce(
                     cartItems,
-                    function (memo, item) {
-                      return memo + item.qty;
+                    function (acc, item) {
+                      return acc + item.qty;
                     },
                     0,
                   )}

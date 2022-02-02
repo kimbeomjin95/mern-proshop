@@ -1,4 +1,5 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstants';
+import _ from 'lodash';
 
 const initialState = {
   cartItems: [],
@@ -26,6 +27,11 @@ export const cartReducer = (state = initialState, action) => {
           cartItems: [...state.cartItems, item],
         };
       }
+    case CART_REMOVE_ITEM:
+      return {
+        ...state,
+        cartItems: _.filter(state.cartItems, x => x.product !== action.payload),
+      };
     default:
       return state;
   }
