@@ -27,7 +27,7 @@ const LoginScreen = () => {
   // const dispatch = useDispatch();
   // const qty = search ? Number(search.split('=')[1]) : 1;
 
-  const submitHandler = e => {
+  const submitHandler = () => {
     // e.preventDefault();
     //
     // // DISPATCH LOGIN
@@ -46,7 +46,7 @@ const LoginScreen = () => {
             type="email"
             placeholder="Enter email"
             value={email}
-            onChange={() => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="password" className="mb-3">
@@ -55,7 +55,7 @@ const LoginScreen = () => {
             type="password"
             placeholder="Enter password"
             value={password}
-            onChange={() => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
