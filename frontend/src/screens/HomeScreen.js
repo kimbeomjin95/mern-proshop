@@ -21,7 +21,7 @@ const HomeScreen = () => {
 
   return (
     <Fragment>
-      <h1>Latest Products</h1>
+      <h1>상품 소개</h1>
       {loading ? (
         <Loader />
       ) : error ? (
