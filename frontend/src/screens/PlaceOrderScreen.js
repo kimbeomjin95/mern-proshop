@@ -1,17 +1,19 @@
-import React, { Fragment, useState } from 'react';
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import React, { Fragment, useEffect } from 'react';
+import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { createOrder } from '../actions/orderActions';
 
 const PlaceOrderScreen = () => {
   const cart = useSelector(state => state.cart);
-
-  console.log('cart', cart);
+  const orderCreate = useSelector(state => state.orderCreate);
+  const { order, success, error } = orderCreate;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const addDecimals = num => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -35,7 +37,27 @@ const PlaceOrderScreen = () => {
     Number(cart.taxPrice)
   ).toFixed(2);
 
-  const placeOrderHandler = () => {};
+  // 주문등록 call
+  const placeOrderHandler = () => {
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        taxPrice: cart.taxPrice,
+        shippingPrice: cart.shippingPrice,
+        totalPrice: cart.totalPrice,
+      }),
+    );
+  };
+
+  // 주문등록 callback
+  useEffect(() => {
+    if (success) {
+      navigate(`/order/${order._id}`);
+    }
+  }, [navigate, success]);
 
   return (
     <Fragment>
@@ -120,6 +142,9 @@ const PlaceOrderScreen = () => {
                   <Col>Total</Col>
                   <Col>${cart.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <div className="d-grid gap-2">
