@@ -37,7 +37,7 @@ const CartScreen = () => {
 
   /* 상품 주문 */
   const checkoutHandler = () => {
-    navigate('/login?redirect=shipping'); // 로그인 하지 않으면 로그인할 예정
+    navigate('/login?redirect=/shipping'); // 로그인 하지 않으면 로그인할 예정
   };
 
   return (
