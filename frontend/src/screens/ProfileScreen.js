@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getUserDetail } from '../actions/userActions';
-import FormContainer from '../components/FormContainer';
-import { useLocation, useNavigate } from 'react-router';
+import { getUserDetail, updateUserProfile } from '../actions/userActions';
+import { useNavigate } from 'react-router';
 
 const ProfileScreen = () => {
   const dispatch = useDispatch();
-  const { search } = useLocation();
   const navigate = useNavigate();
   const userDetail = useSelector(state => state.userDetail);
   const { loading, user, error } = userDetail;
@@ -24,7 +21,8 @@ const ProfileScreen = () => {
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
-  console.log('user', user);
+  const userUpdateProfile = useSelector(state => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
 
   // 프로필 상세 call
   useEffect(() => {
@@ -47,7 +45,7 @@ const ProfileScreen = () => {
       setMessage('비밀번호가 일치하지 않습니다.');
     } else {
       // DISPATCH 프로필 수정
-      // dispatch(register(name, email, password));
+      dispatch(updateUserProfile({ id: userInfo._id, name, email, password }));
     }
   };
 
@@ -57,6 +55,9 @@ const ProfileScreen = () => {
         <h2>회원정보</h2>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
+        {success && (
+          <Message variant="success">회원정보가 수정되었습니다.</Message>
+        )}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name" className="mb-3">

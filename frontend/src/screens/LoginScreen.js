@@ -17,9 +17,9 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const redirect = search ? search.split('=')[1] : '/';
   const { loading, userInfo, error } = userLogin;
-  console.log('search', search);
 
   useEffect(() => {
+    // 로그인 했을 경우
     if (userInfo) {
       navigate(redirect);
     }
