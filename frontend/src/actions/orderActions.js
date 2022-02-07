@@ -2,6 +2,9 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  ORDER_DETAIL_FAIL,
+  ORDER_DETAIL_REQUEST,
+  ORDER_DETAIL_SUCCESS,
 } from '../constants/orderConstants';
 import axios from 'axios';
 
@@ -40,4 +43,43 @@ export const createOrder = order => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+/*
+ * @desc  주문번호 조회
+ */
+export const getOrderDetail = id => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ORDER_DETAIL_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      // Content-Type으로 요청 또는 응답의 데이터가 어떤 형식인지 판단(GET X, POST,PUT O)
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(`/api/orders/${id}`, config);
+
+      dispatch({
+        type: ORDER_DETAIL_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ORDER_DETAIL_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 };
