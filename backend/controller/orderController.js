@@ -39,4 +39,24 @@ const addOrderItems = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems };
+/*
+ * @desc     주문번호 조회
+ * @route    GET /api/orders/:id
+ * @access   Private
+ */
+const getOrderById = asyncHandler(async (req, res) => {
+  // populate: 문서의 경로를 다른 컬렉션의 실제 문서로 자동으로 바꾸는 방법
+  const order = await Order.findById(req.params.id).populate(
+    'user',
+    'name email',
+  );
+
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+export { addOrderItems, getOrderById };
