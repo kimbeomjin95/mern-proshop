@@ -18,8 +18,10 @@ const OrderScreen = () => {
 
   /* 주문목록 상세 call */
   useEffect(() => {
-    dispatch(getOrderDetail(id));
-  }, []);
+    if (!order || order._id !== id) {
+      dispatch(getOrderDetail(id));
+    }
+  }, [order, id]);
 
   if (!loading) {
     const addDecimals = num => {
