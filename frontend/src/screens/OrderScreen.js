@@ -21,7 +21,7 @@ const OrderScreen = () => {
     if (!order || order._id !== id) {
       dispatch(getOrderDetail(id));
     }
-  }, [order, id]);
+  }, [dispatch, order, id]);
 
   if (!loading) {
     const addDecimals = num => {
@@ -33,8 +33,6 @@ const OrderScreen = () => {
       order.orderItems.reduce((acc, item) => acc + item.qty * item.price, 0),
     );
   }
-
-  console.log('order', order);
 
   return loading ? (
     <Loader />

@@ -59,8 +59,6 @@ const getOrderById = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems, getOrderById };
-
 /*
  * @desc     주문결제여부 수정
  * @route    GET /api/orders/:id/pay
