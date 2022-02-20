@@ -22,6 +22,7 @@ const ProductScreen = () => {
   const navigate = useNavigate();
   const productDetailReducer = useSelector(state => state.productDetailReducer);
   const { loading, product, error } = productDetailReducer;
+  console.log(product);
 
   let { id } = useParams();
 
@@ -47,7 +48,12 @@ const ProductScreen = () => {
         <Row>
           {/* 왼쪽 IMG */}
           <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid />
+            {/*<Image src={product.image} alt={product.name} fluid />*/}
+            <Image
+              src={process.env.PUBLIC_URL + `/${product.image}`}
+              alt={product.name}
+              fluid
+            />
           </Col>
           {/* 가운데 상품정보 */}
           <Col md={3}>

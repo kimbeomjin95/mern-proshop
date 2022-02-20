@@ -74,11 +74,11 @@ const ProductListScreen = () => {
     <Fragment>
       <Row className="align-items-center">
         <Col>
-          <h1>Products</h1>
+          <h1>상품목록</h1>
         </Col>
         <Col className="text-end">
           <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"> 상품등록</i>
+            <i className="fas fa-plus"> 등록</i>
           </Button>
         </Col>
       </Row>
@@ -95,10 +95,10 @@ const ProductListScreen = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>NAME</th>
-              <th>PRICE</th>
-              <th>CATEGORY</th>
-              <th>BRAND</th>
+              <th>이름</th>
+              <th>가격</th>
+              <th>카테고리</th>
+              <th>브랜드</th>
               <th></th>
             </tr>
           </thead>
