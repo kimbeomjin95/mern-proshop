@@ -34,7 +34,6 @@ app.get('/api/config/paypal', (req, res) =>
 
 // __dirname 은 현재 실행 중인 폴더 경로
 const __dirname = path.resolve();
-console.log('__dirname', __dirname);
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // app.use()는 미들웨어 기능을 마운트하거나 지정된 경로에 마운트하는 데 사용

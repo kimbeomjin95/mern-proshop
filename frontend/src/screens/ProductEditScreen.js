@@ -8,6 +8,7 @@ import FormContainer from '../components/FormContainer';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
+import axios from 'axios';
 
 const ProductEditScreen = () => {
   let { id } = useParams();
@@ -22,6 +23,7 @@ const ProductEditScreen = () => {
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const productDetailReducer = useSelector(state => state.productDetailReducer);
   const { loading, product, error } = productDetailReducer;
@@ -52,6 +54,31 @@ const ProductEditScreen = () => {
       }
     }
   }, [dispatch, navigate, product, id, successUpdate]);
+
+  const uploadFileHandler = async e => {
+    // 단일 파일업로드
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await axios.post('/api/upload', formData, config);
+
+      setImage(data);
+      setUploading(false);
+    } catch (e) {
+      // 이미지 파일형식이 아닌 경우 500에러
+      console.error(error);
+      setUploading(false);
+    }
+  };
 
   const submitHandler = e => {
     e.preventDefault();
@@ -113,6 +140,11 @@ const ProductEditScreen = () => {
                 value={image}
                 onChange={e => setImage(e.target.value)}
               ></Form.Control>
+              <Form.Control
+                type="file"
+                onChange={uploadFileHandler}
+              ></Form.Control>
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId="brand" className="mb-3">
