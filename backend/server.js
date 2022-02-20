@@ -24,9 +24,11 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
-
-// app.use()는 미들웨어 기능을 마운트하거나 지정된 경로에 마운트하는 데 사용
-app.use(notFound);
+app.get('/api/config/paypal', (req, res) =>
+  res.send(process.env.PAYPAL_CLIENT_ID),
+),
+  // app.use()는 미들웨어 기능을 마운트하거나 지정된 경로에 마운트하는 데 사용
+  app.use(notFound);
 app.use(errorhandler);
 
 // env 환경변수 get
