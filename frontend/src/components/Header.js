@@ -16,7 +16,8 @@ const Header = () => {
     dispatch(logout());
 
     // window.location을 사용해서 이동하게 하면 '/' 주소의 페이지 전체를 리로드
-    window.location = '/';
+    // window.location = '/';
+    navigate('/');
   };
 
   return (
