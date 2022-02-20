@@ -3,10 +3,11 @@ import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { listProductDetail } from '../actions/productActions';
+import { listProductDetail, updateProduct } from '../actions/productActions';
 import FormContainer from '../components/FormContainer';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 const ProductEditScreen = () => {
   let { id } = useParams();
@@ -25,41 +26,48 @@ const ProductEditScreen = () => {
   const productDetailReducer = useSelector(state => state.productDetailReducer);
   const { loading, product, error } = productDetailReducer;
 
-  const userUpdate = useSelector(state => state.userUpdate);
+  const productUpdate = useSelector(state => state.productUpdate);
   const {
     loading: loadingUpdate,
     success: successUpdate,
     error: errorUpdate,
-  } = userUpdate;
+  } = productUpdate;
 
   // 상품 상세조회 call
   useEffect(() => {
-    if (!product.name || product._id !== id) {
-      dispatch(listProductDetail(id));
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+      navigate('/admin/productlist');
     } else {
-      setName(product.name);
-      setPrice(product.price);
-      setImage(product.image);
-      setBrand(product.brand);
-      setCategory(product.category);
-      setCountInStock(product.countInStock);
-      setDescription(product.description);
+      if (!product.name || product._id !== id) {
+        dispatch(listProductDetail(id));
+      } else {
+        setName(product.name);
+        setPrice(product.price);
+        setImage(product.image);
+        setBrand(product.brand);
+        setCategory(product.category);
+        setCountInStock(product.countInStock);
+        setDescription(product.description);
+      }
     }
-  }, [dispatch, navigate, product, id]);
+  }, [dispatch, navigate, product, id, successUpdate]);
 
   const submitHandler = e => {
     e.preventDefault();
 
-    // 정보수정 call
-    // dispatch(
-    //   // 최신 JS 문법(key: value가 동일한 이름일 경우 key값만 셋팅 가능)
-    //   updateUser({
-    //     _id: id,
-    //     name,
-    //     email,
-    //     isAdmin,
-    //   }),
-    // );
+    dispatch(
+      updateProduct({
+        _id: id,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        description,
+        countInStock,
+      }),
+    );
   };
 
   return (
@@ -69,6 +77,8 @@ const ProductEditScreen = () => {
       </Link>
       <FormContainer>
         <h1>상품 수정</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -136,7 +146,7 @@ const ProductEditScreen = () => {
             </Form.Group>
 
             <Form.Group controlId="description" className="mb-3">
-              <Form.Label>카테고리</Form.Label>
+              <Form.Label>설명</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="설명를 입력하세요. "
