@@ -4,7 +4,7 @@ import { Button, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { listUsers } from '../actions/userActions';
+import { listUsers, deleteUser } from '../actions/userActions';
 import { useNavigate } from 'react-router';
 
 const UserListScreen = () => {
@@ -16,16 +16,21 @@ const UserListScreen = () => {
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
+  const userDelete = useSelector(state => state.userDelete);
+  const { success: successDelete } = userDelete;
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers());
     } else {
       navigate('/login');
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, successDelete]); // 삭제 후에 사용자 목록을 재호출
 
-  const deleteHandler = user => {
-    console.log('delete');
+  const deleteHandler = id => {
+    if (window.confirm('해당 사용자를 삭제하시겠습니까?')) {
+      dispatch(deleteUser(id));
+    }
   };
 
   return (
