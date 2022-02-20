@@ -86,7 +86,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 /*
  * @desc     사용자 프로필 수정
- * @route    GET /api/users/profile
+ * @route    PUT /api/users/profile
  * @access   private
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
@@ -142,6 +142,51 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
+/*
+ * @desc     (관리자) - ID로 사용자 조회
+ * @route    GET /api/users/:id
+ * @access   Private/Admin
+ */
+const getUserByid = asyncHandler(async (req, res) => {
+  // select: 조회할 데이터에서 password 제외
+  const user = await User.findById(req.params.id).select('-password');
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+/*
+ * @desc     (관리자) - 사용자 프로필 수정
+ * @route    PUT /api/users/:id
+ * @access   private/Admin
+ */
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin || user.isAdmin;
+
+    // save: 최종적으로 컬렉션에 저장
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error('등록되어 있지 않은 회원입니다.');
+  }
+});
+
 export {
   authUser,
   registerUser,
@@ -149,4 +194,6 @@ export {
   updateUserProfile,
   getUsers,
   deleteUser,
+  getUserByid,
+  updateUser,
 };
