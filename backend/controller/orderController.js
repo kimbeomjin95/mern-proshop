@@ -65,7 +65,6 @@ const getOrderById = asyncHandler(async (req, res) => {
  * @access   Private
  */
 const updateOrderToPaid = asyncHandler(async (req, res) => {
-  // populate: 문서의 경로를 다른 컬렉션의 실제 문서로 자동으로 바꾸는 방법
   const order = await Order.findById(req.params.id);
 
   if (order) {
@@ -90,4 +89,14 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid };
+/*
+ * @desc     로그인된 사용자의 주문정보 조회
+ * @route    GET /api/orders/myorders
+ * @access   Private
+ */
+const getMyOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id });
+  res.json(orders);
+});
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders };
