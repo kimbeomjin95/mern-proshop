@@ -25,7 +25,7 @@ const UserListScreen = () => {
     } else {
       navigate('/login');
     }
-  }, [dispatch, navigate, successDelete]); // 삭제 후에 사용자 목록을 재호출
+  }, [dispatch, navigate, successDelete, userInfo]); // 삭제 후에 사용자 목록을 재호출
 
   const deleteHandler = id => {
     if (window.confirm('해당 사용자를 삭제하시겠습니까?')) {
@@ -67,7 +67,7 @@ const UserListScreen = () => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/user/${user._id}/edit`}>
+                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
