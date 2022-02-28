@@ -2,6 +2,7 @@ import path from 'path'; // path 모듈은 폴더와 파일의 경로를 지정�
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDb from './config/db.js'; // .js파일을 가져올 경우 .js 추가
+import morgan from 'morgan';
 import colors from 'colors';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -14,6 +15,10 @@ dotenv.config();
 connectDb();
 
 const app = express();
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 // JSON Request Body 파싱
 app.use(express.json());
