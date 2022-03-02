@@ -46,6 +46,7 @@ const App = () => {
             />
             <Route path="/admin/orderlist" element={<OrderListScreen />} />
             <Route path="/" element={<HomeScreen />} />
+            <Route path="/search/:keyword" element={<HomeScreen />} />
           </Routes>
         </Container>
       </main>

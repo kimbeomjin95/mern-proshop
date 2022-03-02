@@ -6,8 +6,11 @@ import Product from '../components/Product';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listProducts } from '../actions/productActions';
+import { useParams } from 'react-router';
 
 const HomeScreen = () => {
+  const { keyword } = useParams();
+
   const dispatch = useDispatch();
 
   /* store */
@@ -16,8 +19,8 @@ const HomeScreen = () => {
 
   /* 상품 목록 조회 call */
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(listProducts(keyword));
+  }, [dispatch, keyword]);
 
   return (
     <Fragment>

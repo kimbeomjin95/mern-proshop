@@ -7,7 +7,17 @@ import asyncHandler from 'express-async-handler';
  * @access   Public
  */
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}); // 전체검색
+  // query: 쿼리스트링
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i', // 대소문자 구별X
+        },
+      }
+    : {};
+
+  const products = await Product.find({ ...keyword }); // 전체검색
   res.json(products);
 });
 
