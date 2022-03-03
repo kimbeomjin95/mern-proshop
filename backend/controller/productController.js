@@ -161,6 +161,17 @@ const createProductReview = asyncHandler(async (req, res) => {
   res.status(201).json(updatedProduct);
 });
 
+/*
+ * @desc     상단 랭킹 상품목록
+ * @route    get /api/products/top
+ * @access   public
+ */
+const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+  res.json(products);
+});
+
 export {
   getProducts,
   getProductById,
@@ -168,4 +179,5 @@ export {
   createProduct,
   updateProduct,
   createProductReview,
+  getTopProducts,
 };

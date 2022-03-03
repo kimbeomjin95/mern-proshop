@@ -11,9 +11,11 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
-  PRODUCT_REVIEW_CREATE_FAIL,
   PRODUCT_REVIEW_CREATE_REQUEST,
   PRODUCT_REVIEW_CREATE_SUCCESS,
+  PRODUCT_TOP_FAIL,
+  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
   PRODUCT_UPDATE_FAIL,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
@@ -27,13 +29,14 @@ export const listProducts =
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
-      // 첫번째 쿼리스트링 ?
-      // 두번째부터는 &
       const { data } = await axios.get(
         `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`,
       );
 
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+      dispatch({
+        type: PRODUCT_LIST_SUCCESS,
+        payload: data,
+      });
     } catch (error) {
       dispatch({
         type: PRODUCT_LIST_FAIL,
@@ -206,7 +209,7 @@ export const createProductReview =
       });
     } catch (error) {
       dispatch({
-        type: PRODUCT_REVIEW_CREATE_FAIL,
+        type: PRODUCT_UPDATE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
@@ -214,3 +217,25 @@ export const createProductReview =
       });
     }
   };
+
+export const listTopProducts = () => async dispatch => {
+  try {
+    dispatch({ type: PRODUCT_TOP_REQUEST });
+
+    const { data } = await axios.get(`/api/products/top`);
+
+    dispatch({
+      type: PRODUCT_TOP_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log('error', error);
+    dispatch({
+      type: PRODUCT_TOP_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

@@ -8,6 +8,7 @@ import Loader from '../components/Loader';
 import { listProducts } from '../actions/productActions';
 import { useParams } from 'react-router';
 import Paginate from '../components/Paginate';
+import ProductCarousel from '../components/ProductCarousel';
 
 const HomeScreen = () => {
   const params = useParams();
@@ -27,6 +28,7 @@ const HomeScreen = () => {
 
   return (
     <Fragment>
+      {!keyword && <ProductCarousel />}
       <h1>상품 소개</h1>
       {loading ? (
         <Loader />
