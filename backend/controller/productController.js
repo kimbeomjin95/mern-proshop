@@ -7,6 +7,9 @@ import asyncHandler from 'express-async-handler';
  * @access   Public
  */
 const getProducts = asyncHandler(async (req, res) => {
+  const pageSize = 2;
+  const page = Number(req.query.pageNumber) || 1;
+
   // query: 쿼리스트링
   const keyword = req.query.keyword
     ? {
@@ -17,8 +20,12 @@ const getProducts = asyncHandler(async (req, res) => {
       }
     : {};
 
-  const products = await Product.find({ ...keyword }); // 전체검색
-  res.json(products);
+  // count: Collection의 Document 갯수 반환
+  const count = await Product.count({ ...keyword });
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1)); // 전체검색
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 /*
@@ -121,7 +128,6 @@ const createProductReview = asyncHandler(async (req, res) => {
 
   if (product) {
     const alreadyReviewed = product.reviews.find(r => {
-      console.log('r', r);
       return r.user.toString() === req.user._id.toString();
     });
 

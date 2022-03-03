@@ -22,12 +22,16 @@ import axios from 'axios';
 
 /* 상품 목록 조회 call */
 export const listProducts =
-  (keyword = '') =>
+  (keyword = '', pageNumber = '') =>
   async dispatch => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
-      const { data } = await axios.get(`/api/products?keyword=${keyword}`);
+      // 첫번째 쿼리스트링 ?
+      // 두번째부터는 &
+      const { data } = await axios.get(
+        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`,
+      );
 
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {

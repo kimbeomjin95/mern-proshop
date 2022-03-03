@@ -7,20 +7,23 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listProducts } from '../actions/productActions';
 import { useParams } from 'react-router';
+import Paginate from '../components/Paginate';
 
 const HomeScreen = () => {
-  const { keyword } = useParams();
+  const params = useParams();
+  const { keyword } = params;
+  const pageNumber = params?.pageNumber || 1;
 
   const dispatch = useDispatch();
 
   /* store */
   const productList = useSelector(state => state.productListReducer);
-  const { loading, error, products } = productList;
+  const { loading, error, products, pages, page } = productList;
 
   /* 상품 목록 조회 call */
   useEffect(() => {
-    dispatch(listProducts(keyword));
-  }, [dispatch, keyword]);
+    dispatch(listProducts(keyword, pageNumber));
+  }, [dispatch, keyword, pageNumber]);
 
   return (
     <Fragment>
@@ -30,16 +33,23 @@ const HomeScreen = () => {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          {_.map(products, product => {
-            // return 주의
-            return (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Product product={product} />
-              </Col>
-            );
-          })}
-        </Row>
+        <Fragment>
+          <Row>
+            {_.map(products, product => {
+              // return 주의
+              return (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product product={product} />
+                </Col>
+              );
+            })}
+          </Row>
+          <Paginate
+            pages={pages}
+            page={page}
+            keyword={keyword ? keyword : ''}
+          />
+        </Fragment>
       )}
     </Fragment>
   );
