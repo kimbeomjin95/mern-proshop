@@ -31,6 +31,7 @@ div.card-title {
 .carousel-item-next,
 .carousel-item-prev,
 .carousel-item.active {
+
     display: flex;
 }
 .carousel-caption {
@@ -57,4 +58,8 @@ div.card-title {
     .carousel-caption h2 {
         font-size: 2.5vw;
     }
+}
+
+footer {
+    background: #f7f7f7;
 }
