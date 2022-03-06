@@ -1,19 +1,22 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Col, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import _ from 'lodash';
 import Product from '../components/Product';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listProducts } from '../actions/productActions';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import Paginate from '../components/Paginate';
 import ProductCarousel from '../components/ProductCarousel';
+import Meta from '../components/Meta';
+import { Link } from 'react-router-dom';
 
 const HomeScreen = () => {
   const params = useParams();
   const { keyword } = params;
   const pageNumber = params?.pageNumber || 1;
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -28,7 +31,14 @@ const HomeScreen = () => {
 
   return (
     <Fragment>
-      {!keyword && <ProductCarousel />}
+      <Meta />
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Button variant="link" onClick={() => navigate('/')}>
+          홈으로 돌아가기
+        </Button>
+      )}
       <h1>상품 소개</h1>
       {loading ? (
         <Loader />
